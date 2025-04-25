@@ -5,7 +5,7 @@
 
 using namespace std;
 
-unordered_map<string, string> accessCodes; 
+unordered_map<string, string> accessCodes;
 
 void displayIntro() {
     cout << "\nFile Management Helper\n";
@@ -25,7 +25,7 @@ void showOptions() {
 
 void handleNewFile() {
     string fileName, accessCode;
-    
+    cin.ignore();
     cout << "\nCreating new file\n";
     cout << "Enter file name: ";
     getline(cin, fileName);
@@ -41,12 +41,12 @@ void handleNewFile() {
     getline(cin, accessCode);
     
     ofstream newFile(fileName);
-    if (newFile.is_open()) {
+    if (newFile) {
         newFile.close();
         accessCodes[fileName] = accessCode;
         cout << "File created successfully.\n";
     } else {
-        cout << "Unable to create file.\n";
+        cout << "Error: Unable to create file. Check permissions or path.\n";
     }
 }
 
@@ -56,9 +56,9 @@ bool verifyAccess(const string& fileName) {
         return false;
     }
     
-    for (int tries = 0; tries < 3; tries++) {
+    for (int tries = 3; tries > 0; tries--) {
         string userCode;
-        cout << "Enter access code (" << 3-tries << " attempts remaining): ";
+        cout << "Enter access code (" << tries << " attempts remaining): ";
         getline(cin, userCode);
         
         if (userCode == accessCodes[fileName]) {
@@ -73,7 +73,7 @@ bool verifyAccess(const string& fileName) {
 
 void appendToFile() {
     string fileName, content;
-    
+    cin.ignore();
     cout << "\nAdd to file\n";
     cout << "Enter file name: ";
     getline(cin, fileName);
@@ -90,7 +90,7 @@ void appendToFile() {
         getline(cin, content);
         
         ofstream file(fileName, ios::app);
-        if (file.is_open()) {
+        if (file) {
             file << content << "\n";
             file.close();
             cout << "Content added.\n";
@@ -102,7 +102,7 @@ void appendToFile() {
 
 void displayFile() {
     string fileName;
-    
+    cin.ignore();
     cout << "\nView file\n";
     cout << "Enter file name: ";
     getline(cin, fileName);
@@ -127,7 +127,7 @@ void displayFile() {
 
 void deleteFile() {
     string fileName;
-    
+    cin.ignore();
     cout << "\nRemove file\n";
     cout << "Warning: This cannot be undone.\n";
     cout << "Enter file name: ";
@@ -194,4 +194,3 @@ int main() {
     runHelper();
     return 0;
 }
-
